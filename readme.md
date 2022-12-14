@@ -10,10 +10,10 @@ Whatever it was, make sure:
 **Also it is very useful to enable customization scripts execution**, follow VMware KB "Setting the customization script for virtual machines in vSphere 7.x and 8.x (74880)": https://kb.vmware.com/s/article/74880.<br />
 
 ### Additional disks but type
-Be careful choosing bus type for a data disks. In case your template has system disk (0:0) with Parallel but type, and you are going to add data disks to a Paravirtual bus (1:x), your Ubuntu guest OS will change system disk letter (e.g. from sda to sdb)! It's safer to add data disks to the same bus type as a system disk attached to. It just means not the same bus, but the **same bus type**.
+Be careful choosing bus type for a data disks. In case your template has system disk (0:0) with Parallel bus type, and you are going to add data disks to a Paravirtual bus (1:x), your Ubuntu guest OS will change system disk letter (e.g. from sda to sdb)! It's safer to add data disks to the same bus type as a system disk attached to. It just means not the same bus, but the **same bus type**.
 
 ### System disk override
-If you need to override system disk parameters, then uncomment the corresponding section in main.tf of the "ubuntu-customization-module".
+If you need to override system disk parameters, then uncomment the corresponding section in the main.tf of "ubuntu-customization-module".
 
 ### CPU and Memory hot-add
 CPU hot-add and Memory hot-plug are enabled and hardcoded in module "ubuntu-customization-module".
