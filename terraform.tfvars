@@ -2,7 +2,7 @@
 org_user                        = "admin"
 org_password                    = "P@ssword"
 org_name                        = "org"
-org_url                         = "https://iaaslab.cloud.mts.ru/api"
+org_url                         = "https://cloud.director.com/api"
 org_vdc                         = "org_vdc"
 org_max_retry_timeout           = 1800
 org_allow_unverified_ssl        = true
