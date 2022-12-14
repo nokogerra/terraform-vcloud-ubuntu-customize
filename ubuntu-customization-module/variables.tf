@@ -3,11 +3,6 @@ variable "mod_org_name" {
   default     = "default"
 }
 
-variable "mod_vapp_name" {
-  description = ""
-  default     = "default"
-}
-
 variable "mod_org_catalog" {
   description = ""
   default     = "default"
@@ -52,7 +47,7 @@ variable "mod_vm_name" {
   default     = "default"
 }
 
-variable "mod_vapp_network" {
+variable "mod_org_network" {
   description = ""
   default     = "default"
 }
@@ -62,14 +57,14 @@ variable "mod_ip_addr" {
   default     = "default"
 }
 
-variable "mod_vm_data_disks" {
-  type = list(object({
-    #    mount_point     = string
-    #    file_system     = string
-    #    storage_profile = string
-    size = number
+#Additional disks vars
+variable "mod_add_disks" {
+  type = map(object({
+    sizegb          = string
+    bus_num         = string
+    unit_num        = string
+    storage_profile = string
+    bus_type        = string
   }))
-
-  description = "VM hard drives"
-  default     = []
+  default = {}
 }
