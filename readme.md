@@ -19,6 +19,7 @@ If you need to override system disk parameters, then uncomment the corresponding
 CPU hot-add and Memory hot-plug are enabled and hardcoded in module "ubuntu-customization-module".
 
 ### Usage
+Fulfill "terraform.tfvars", then:
 ```
 terraform plan
 terraform apply
