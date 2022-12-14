@@ -17,3 +17,9 @@ If you need to override system disk parameters, then uncomment the corresponding
 
 ### CPU and Memory hot-add
 CPU hot-add and Memory hot-plug are enabled and hardcoded in module "ubuntu-customization-module".
+
+### Usage
+```
+terraform plan
+terraform apply
+```
