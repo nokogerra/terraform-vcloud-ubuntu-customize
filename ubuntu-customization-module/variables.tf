@@ -68,3 +68,23 @@ variable "mod_add_disks" {
   }))
   default = {}
 }
+
+variable "mod_region" {
+  description = ""
+  default     = "default"
+}
+
+variable "mod_users" {
+  description = ""
+  default     = "default"
+}
+
+variable "mod_zabbix" {
+  description = ""
+  default     = "default"
+}
+
+variable "mod_make_lvm" {
+  description = ""
+  default     = "default"
+}

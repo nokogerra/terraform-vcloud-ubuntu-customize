@@ -103,3 +103,22 @@ variable "add_disks" {
   default = {}
 }
 
+variable "region" {
+  description = ""
+  default     = "default"
+}
+
+variable "users" {
+  description = ""
+  default     = "default"
+}
+
+variable "zabbix" {
+  description = ""
+  default     = "default"
+}
+
+variable "make_lvm" {
+  description = ""
+  default     = "default"
+}

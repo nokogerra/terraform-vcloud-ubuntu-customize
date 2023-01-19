@@ -14,4 +14,8 @@ module "ubuntu-customization-module" {
   mod_vm_mem                   = each.value.vm_mem
   mod_vm_cpus                  = each.value.vm_cpus
   mod_add_disks                = var.add_disks
+  mod_region                   = var.region
+  mod_users                    = var.users
+  mod_zabbix                   = var.zabbix
+  mod_make_lvm                 = var.make_lvm
 }
