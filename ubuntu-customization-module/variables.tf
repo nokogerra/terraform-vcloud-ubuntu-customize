@@ -3,7 +3,17 @@ variable "mod_org_name" {
   default     = "default"
 }
 
-variable "mod_org_catalog" {
+variable "mod_org_vdc" {
+  description = ""
+  default     = "default"
+}
+
+variable "mod_catalog_name" {
+  description = ""
+  default     = "default"
+}
+
+variable "mod_catalog_org_name" {
   description = ""
   default     = "default"
 }

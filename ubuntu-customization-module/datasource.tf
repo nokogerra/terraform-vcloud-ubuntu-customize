@@ -11,6 +11,6 @@ data "template_file" "customization" {
 }
 
 data "vcd_catalog" "my_cat" {
-  org  = var.mod_org_name
-  name = var.mod_org_catalog
+  org  = var.mod_catalog_org_name
+  name = var.mod_catalog_name
 }

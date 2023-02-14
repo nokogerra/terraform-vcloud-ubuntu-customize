@@ -1,9 +1,12 @@
 provider "vcd" {
-  user                 = var.org_user
-  password             = var.org_password
-  org                  = var.org_name
+  user = var.vcd_user
+  #token     = "TZ32qucUohJIKOG1YrYWxgVQPn26QNzb"
+  #auth_type = "token"
+  password             = var.vcd_pass
+  sysorg               = "System"
+  org                  = var.org_name # Default for resources
   vdc                  = var.org_vdc
-  url                  = var.org_url
-  allow_unverified_ssl = var.org_allow_unverified_ssl
-  max_retry_timeout    = var.org_max_retry_timeout
+  url                  = var.vcd_url
+  max_retry_timeout    = var.vcd_max_retry_timeout
+  allow_unverified_ssl = var.vcd_allow_unverified_ssl
 }

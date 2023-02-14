@@ -1,11 +1,13 @@
 module "ubuntu-customization-module" {
   for_each                     = var.vms
   source                       = "./ubuntu-customization-module"
+  mod_org_name                 = var.org_name
+  mod_org_vdc                  = var.org_vdc
+  mod_catalog_name             = var.catalog_name
+  mod_catalog_org_name         = var.catalog_org_name
   mod_system_disk_bus          = var.system_disk_bus
   mod_system_disk_size         = var.system_disk_size
   mod_sys_disk_storage_profile = var.sys_disk_storage_profile
-  mod_org_name                 = var.org_name
-  mod_org_catalog              = var.org_catalog
   mod_template_vm              = var.template_vm
   mod_storage_profile          = var.storage_profile
   mod_org_network              = var.org_network

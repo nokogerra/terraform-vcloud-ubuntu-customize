@@ -1,18 +1,30 @@
-#Provider vars
-org_user                        = "user"
-org_password                    = "password"
-org_name                        = "org_name"
-org_url                         = "https://cloud.fqdn/api"
-org_vdc                         = "org_vdc"
-org_max_retry_timeout           = 1800
-org_allow_unverified_ssl        = true
+#-----Provider vars-----#
 
-org_edge_gw                     = "edge"
-org_catalog                     = "catalog"
-template_vm                     = "ubuntu-custom-template"
-os_type                         = "ubuntu64Guest"
+#System-wide administrator
+vcd_user                        = "administrator"
+vcd_pass                        = "P@ssw0rd"
+vcd_url                         = "https://vcloud.fqdn/api"
+vcd_max_retry_timeout           = 1800
+vcd_allow_unverified_ssl        = true
+
+#Organization vars
+org_name                        = "org_name"
+org_vdc                         = "org_vdc_name"
+org_edge_gw                     = "org_vdc_edge_name"
 org_network                     = "test-external-net"
 storage_profile                 = "DPLabCompNonSSD"
+
+
+#-----Catalog vars-----#
+
+#Name of the catalog's owning vCD organization (usually a single Org made by a Provider)
+catalog_org_name                = "Org-Catalogs"
+catalog_name                    = "Ubuntu"
+template_vm                     = "ubuntu-focal-20.04"
+
+
+
+#-----VMs vars-----#
 
 #System disk override vars. Disk override is going to commit the changes only if its section is not commented out inside the module (main.tf)
 #In case you don't want to override the system disk, make sure, the override section is commented out in the module body.
@@ -47,14 +59,14 @@ zabbix = "#-z"
 make_lvm = "#/root/deploy/add-disk -O -D 2 -M /data"
 
 #Data disks. Comment this var out, in case you do not need an additional disks.
-#add_disks = {
-#          disk1 = {
-#            sizegb = "15"
-#            bus_num = "0"
-#            unit_num = "1"
-#            storage_profile = "DPLabCompNonSSD" 
-#            bus_type = "parallel" 
-#          }
+add_disks = {
+          disk1 = {
+            sizegb = "15"
+            bus_num = "0"
+            unit_num = "1"
+            storage_profile = "DPLabCompNonSSD" 
+            bus_type = "paravirtual" 
+          }
 #          disk2 = {
 #            sizegb = "5"
 #            bus_num = "0"
@@ -62,5 +74,5 @@ make_lvm = "#/root/deploy/add-disk -O -D 2 -M /data"
 #            storage_profile = "DPLabCompNonSSD"
 #            bus_type = "parallel"  
 #          }
-#}
+}
 

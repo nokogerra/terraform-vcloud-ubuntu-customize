@@ -1,4 +1,6 @@
 resource "vcd_vm" "vm" {
+  org                    = var.mod_org_name
+  vdc                    = var.mod_org_vdc
   catalog_name           = data.vcd_catalog.my_cat.name
   template_name          = var.mod_template_vm
   memory                 = var.mod_vm_mem * 1024

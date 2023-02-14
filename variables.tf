@@ -1,10 +1,10 @@
 # Provider vars
-variable "org_user" {
+variable "vcd_user" {
   default     = "administrator"
   description = "vCD Tenant User"
 }
 
-variable "org_password" {
+variable "vcd_pass" {
   default     = "password"
   description = "vCD Tenant Password"
 }
@@ -14,22 +14,32 @@ variable "org_name" {
   description = "vCD Tenant Org"
 }
 
-variable "org_url" {
-  default     = "https://vcd.vmcloud.reg.ru/api"
-  description = "vCD Tenant URL"
-}
-
 variable "org_vdc" {
   default     = "def_org_vdc"
   description = "vCD Tenant VDC"
 }
 
-variable "org_max_retry_timeout" {
+variable "catalog_name" {
+  description = ""
+  default     = "default"
+}
+
+variable "catalog_org_name" {
+  description = ""
+  default     = "default"
+}
+
+variable "vcd_url" {
+  default     = "https://vcd.vmcloud.reg.ru/api"
+  description = "vCD Tenant URL"
+}
+
+variable "vcd_max_retry_timeout" {
   description = "Retry Timeout"
   default     = "240"
 }
 
-variable "org_allow_unverified_ssl" {
+variable "vcd_allow_unverified_ssl" {
   description = "vCD allow unverified SSL"
   default     = "true"
 }
@@ -37,11 +47,6 @@ variable "org_allow_unverified_ssl" {
 variable "org_edge_gw" {
   description = "vCD edge name"
   default     = "none"
-}
-
-variable "org_catalog" {
-  description = "vCD Catalog Name"
-  default     = "DR-catalogina"
 }
 
 variable "template_vm" {
