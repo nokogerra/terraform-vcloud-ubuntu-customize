@@ -1,4 +1,5 @@
 ## Just a simple module to create Ubuntu VM from template in VMware Cloud Director 10.x
+This recipe is intended for use by vCD system administrator, in case of particular Org admin, the recipe must be edited a bit (check provider.tf).<br />
 In case you want to use bare VMware customization **without cloud-init** (and this recipe is just about that kind of usage), then read the following with caution:<br />
 cloud-init is installed by default on Ubuntu 20.04 LTS even if you have deployed it manually via ISO file.<br />
 So, since you don't provide cloud-init with its datasource, it is going to make some stupid things (subiquity in particular): it creates a config file in /etc/netplan, which will conflict with VMware customization config file later.<br />
@@ -19,8 +20,9 @@ If you need to override system disk parameters, then uncomment the corresponding
 CPU hot-add and Memory hot-plug are enabled and hardcoded in module "ubuntu-customization-module".
 
 ### Usage
-Fulfill "terraform.tfvars", then:
+Fill "terraform.tfvars", then run:
 ```
+terraform init
 terraform plan
 terraform apply
 ```
