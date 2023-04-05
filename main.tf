@@ -21,3 +21,11 @@ module "ubuntu-customization-module" {
   mod_zabbix                   = var.zabbix
   mod_make_lvm                 = var.make_lvm
 }
+
+resource "null_resource" "remove_state" {
+  provisioner "local-exec" {
+    command     = "/usr/bin/rm *tfstate*"
+    working_dir = path.root
+  }
+  depends_on = [module.ubuntu-customization-module]
+}

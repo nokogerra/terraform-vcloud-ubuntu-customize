@@ -1,7 +1,5 @@
 provider "vcd" {
-  user = var.vcd_user
-  #token     = "TZ32qucUohJIKOG1YrYWxgVQPn26QNzb"
-  #auth_type = "token"
+  user                 = var.vcd_user
   password             = var.vcd_pass
   sysorg               = "System"
   org                  = var.org_name # Default for resources

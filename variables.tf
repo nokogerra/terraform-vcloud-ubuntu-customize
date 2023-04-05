@@ -5,8 +5,9 @@ variable "vcd_user" {
 }
 
 variable "vcd_pass" {
-  default     = "password"
   description = "vCD Tenant Password"
+  type        = string
+  sensitive   = true
 }
 
 variable "org_name" {
@@ -42,11 +43,6 @@ variable "vcd_max_retry_timeout" {
 variable "vcd_allow_unverified_ssl" {
   description = "vCD allow unverified SSL"
   default     = "true"
-}
-
-variable "org_edge_gw" {
-  description = "vCD edge name"
-  default     = "none"
 }
 
 variable "template_vm" {

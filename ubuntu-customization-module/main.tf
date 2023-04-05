@@ -10,6 +10,7 @@ resource "vcd_vm" "vm" {
   storage_profile        = var.mod_storage_profile
   computer_name          = var.mod_vm_name
   name                   = var.mod_vm_name
+  #power_on               = false
 
   #  override_template_disk {
   #    size_in_mb      = var.mod_system_disk_size * 1024

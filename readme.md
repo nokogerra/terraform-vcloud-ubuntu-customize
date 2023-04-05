@@ -1,28 +1,97 @@
-## Just a simple module to create Ubuntu VM from template in VMware Cloud Director 10.x
-This recipe is intended for use by vCD system administrator, in case of particular Org admin, the recipe must be edited a bit (check provider.tf).<br />
-In case you want to use bare VMware customization **without cloud-init** (and this recipe is just about that kind of usage), then read the following with caution:<br />
-cloud-init is installed by default on Ubuntu 20.04 LTS even if you have deployed it manually via ISO file.<br />
-So, since you don't provide cloud-init with its datasource, it is going to make some stupid things (subiquity in particular): it creates a config file in /etc/netplan, which will conflict with VMware customization config file later.<br />
-Whatever it was, make sure:
-* there are no files in /etc/netplan/ in the OS before you will shutdown the VM to make a template from it (next time you boot this VM it will has no IP addr);
-* check if /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg has the line "network: {config: disabled}"
-* you can even remove cloud-init, mind it on your own. E.g. https://gist.github.com/zoilomora/f862f76335f5f53644a1b8e55fe98320.
+## Развёртывание VM в Cloud Director с помощью terraform
+**Инструкция для запуска на Windows**<br />
+Этот проект позволяет развернуть необходимое количество standalone VM в организации vCD (в "невидимых vAPP") с указанным количеством дисков. Проект предполагает деплой от имени системного администратора Cloud Director (не от имени администратора организации).
+### Требования
+Необходимо скачать актуальную версию terraform https://developer.hashicorp.com/terraform/downloads (на данный момент 1.4.4) и внести путь к скачанному бинарному файлу в $PATH (в системных или личных переменных среды). Проверить, что путь корректно указан можно командой:
+```
+terraform version
+```
+Учитывая блокировку доступа к репозиториям провайдеров terraform из России, можно использовать зеркало с провайдерами или локально скачанные провайдеры с помощью cache.<br />
+Конфигурация должна быть указана в файле "terraform.rc", находящимся в %APPDATA% (см. $env:APPDATA в Powershell) или же путь к конфигурационному файлу terraform можно задать в переменной среды TF_CLI_CONFIG_FILE.<br />
+Доступные альтернативы зеркал провайдеров terraform можно найти в закрепе канала https://t.me/terraform_ru. Пример конфигурации terraform.rc:
+```
+provider_installation {
+  network_mirror {
+    url = "https://registry.comcloud.xyz/"
+  }
+}
+```
+Пример конфигурации для использования локально скачанных провайдеров (обратите внимание на переменную TF_PLUGIN_CACHE_DIR):
+```
+provider_installation {
+  filesystem_mirror {
+    path    = "C:\\terraform\\cache"
+  }
+}
+```
+```
+$env:TF_PLUGIN_CACHE_DIR
+C:\terraform\cache
 
-**Also it is very useful to enable customization scripts execution**, follow VMware KB "Setting the customization script for virtual machines in vSphere 7.x and 8.x (74880)": https://kb.vmware.com/s/article/74880.<br />
+Get-ChildItem C:\terraform\cache\ -Recurse -Depth 1
 
-### Additional disks but type
-Be careful choosing bus type for a data disks. In case your template has system disk (0:0) with Parallel bus type, and you are going to add data disks to a Paravirtual bus (1:x), your Ubuntu guest OS will change system disk letter (e.g. from sda to sdb)! It's safer to add data disks to the same bus type as a system disk attached to. It just means not the same bus, but the **same bus type**.
+    Directory: C:\terraform\cache
 
-### System disk override
-If you need to override system disk parameters, then uncomment the corresponding section in the main.tf of "ubuntu-customization-module".
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----        03-Oct-22     14:59                registry.terraform.io
+-a----        14-Nov-22     17:08            198 config.tf
 
-### CPU and Memory hot-add
-CPU hot-add and Memory hot-plug are enabled and hardcoded in module "ubuntu-customization-module".
+    Directory: C:\terraform\cache\registry.terraform.io
 
-### Usage
-Fill "terraform.tfvars", then run:
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----        14-Nov-22     17:09                hashicorp
+d-----        03-Oct-22     14:59                terraform-provider-openstack
+d-----        03-Oct-22     14:59                vmware
+```
+
+PowerCLI не необходим для использования проекта, но поможет в заполнении переменных terraform. Установка:
+```
+Install-Module -Name VMware.PowerCLI
+or
+Install-Module -Name VMware.PowerCLI -Scope User
+```
+В случае отсутствия доступа в интернет, можно использовать архив из https://developer.vmware.com/docs/17484/, распаковать его в $env:PSModulePath, из этого же каталога выполнить:
+```
+Get-ChildItem * -Recurse | Unblock-File 
+```
+Проверить доступность модулей VMware можно следующей командой:
+```
+Get-Module *vmw* -ListAvailable
+```
+### Процесс развёртывания
+**Перед развёртыванием следует убедиться, что в каталоге проекта нет файлов tfstate, если они присутствуют, их следует удалить!**<br />
+Для упрощения процесса заполнения переменных в terraform.tfvars можно использовать скрипт get_vcd_info.ps1, который соберёт информацию о доступных VDC, сетях и Storage Profiles в целевой организации vCD, а также информацию о доступных шаблонах в общем каталоге. Пример использования (потребуется УЗ с правами системного администратора vCD):
+```
+./get_vcd_info.ps1 -vcdaddr vcloud.example.local -org some_org -catalogorg MTS-Catalog -catalogname Linux
+```
+- "vcloud.example.local" - FQDN Cloud Director;
+- "org" - целевая организация для деплоя VM;
+- "catalogorg" - организация-владелец каталога с нужным шаблоном;
+- "catalogname" - название каталога.
+
+Далее необходимо заполнить переменные в terraform.tfvars, ко всем переменным указаны комментарии.<br />
+Для развёртывания VM необходимо выполнить следующие команды из корня каталога проекта:
 ```
 terraform init
 terraform plan
 terraform apply
 ```
+"terraform plan" - необязательная команда, т.к. при выполнении "terraform apply" план развёртывания будет выдан автоматически.
+### Кастомизация
+Кастомизация выполняется с помощью скрипта, вложенного в шаблон VM, но аргументы этому скрипту передаются в переменных:
+- region;
+- users;
+- zabbix;
+- make_lvm.
+Если VM не нужно ставить на мониторинг или не нужно размечать добавленный диск, первым символом этих переменных можно указать "#".
+### Добавление дисков
+Добавление дисков контроллируется переменной (map) "add_disks", если диски добавлять не нужно, её следует закомментировать. В случае добавления двух и более дисков, в main.tf модуля "ubuntu-customization-module" следует раскомментировать строку "#power_on = false", т.к. terraform деплоит ресурсы в рандомном порядке и диски могут иметь непредсказуемое наименование вплоть до перезагрузки машины. Пример: диск 1:1 был добавлен первым (VM обычно в этот момент уже включена), и ему задаётся имя "sdb", диск 1:0 добавляется вторым и именуется "sdc". Посре перезагрузки диски переименовываются в соответствии с положением дисков в SCSI-контроллере. Строка "power_on = false" не даст машине запуститься сразу после деплоя, что позволит запустить её уже после добавления всех дисков.
+> Следует обращать внимание на тип контроллера системного диска, приоритет всегда имеет "Paravirtual", поэтому если системный диск находится, например, в контроллере LSI Logic SAS, а позже будет добавлен контроллер "Paravirtual", системный диск будет переименован после перезагрузки. Желательно, чтобы все диски VM находились в контроллерах одного типа.
+> Параметры системного диска можно переопределить в переменных из раздела "#System disk override vars", но она работает только если раздел "override_template_disk" раскомментирован в main.tf модуля "ubuntu-customization-module".
+### Terraform state
+TF state в данном случае не хранится, т.е. terraform используется только для деплоя машин. null_resource "remove_state" удаляет state автоматически после деплоя машин.
+
+
+

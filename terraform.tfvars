@@ -1,26 +1,24 @@
 #-----Provider vars-----#
 
 #System-wide administrator
-vcd_user                        = "administrator"
-vcd_pass                        = "P@ssw0rd"
-vcd_url                         = "https://vcloud.fqdn/api"
+vcd_user                        = "agkopyl2"
+vcd_url                         = "https://iaaslab.cloud.mts.ru/api"
 vcd_max_retry_timeout           = 1800
 vcd_allow_unverified_ssl        = true
 
 #Organization vars
-org_name                        = "org_name"
-org_vdc                         = "org_vdc_name"
-org_edge_gw                     = "org_vdc_edge_name"
+org_name                        = "akopylov_org"
+org_vdc                         = "akopylov-org-vdc-t"
 org_network                     = "test-external-net"
 storage_profile                 = "DPLabCompNonSSD"
 
 
 #-----Catalog vars-----#
 
-#Name of the catalog's owning vCD organization (usually a single Org made by a Provider)
-catalog_org_name                = "Org-Catalogs"
-catalog_name                    = "Ubuntu"
-template_vm                     = "ubuntu-focal-20.04"
+#Name of the catalog owning vCD organization (usually a single Org made by a Provider)
+catalog_org_name                = "MTS-Catalogs"
+catalog_name                    = "Linux"
+template_vm                     = "Ubuntu-20.04.3-amd64-Eng-Server"
 
 
 
@@ -56,17 +54,17 @@ users = "apkorol1,rvkarmal,vbpechen,mkonchev"
 zabbix = "#-z"
 
 #to make LVMs on top of added disks, UNCOMMENT the line inside quotas:
-make_lvm = "#/root/deploy/add-disk -O -D 2 -M /data"
+make_lvm = "/root/deploy/add-disk -O -D 2 -M /data"
 
 #Data disks. Comment this var out, in case you do not need an additional disks.
-add_disks = {
-          disk1 = {
-            sizegb = "15"
-            bus_num = "0"
-            unit_num = "1"
-            storage_profile = "DPLabCompNonSSD" 
-            bus_type = "paravirtual" 
-          }
+#add_disks = {
+#          disk1 = {
+#            sizegb = "15"
+#            bus_num = "0"
+#            unit_num = "1"
+#            storage_profile = "DPLabCompNonSSD" 
+#            bus_type = "paravirtual" 
+#          }
 #          disk2 = {
 #            sizegb = "5"
 #            bus_num = "0"
@@ -74,5 +72,5 @@ add_disks = {
 #            storage_profile = "DPLabCompNonSSD"
 #            bus_type = "parallel"  
 #          }
-}
+#}
 
