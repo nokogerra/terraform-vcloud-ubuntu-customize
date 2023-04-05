@@ -1,8 +1,8 @@
 #-----Provider vars-----#
 
 #System-wide administrator
-vcd_user                        = "agkopyl2"
-vcd_url                         = "https://iaaslab.cloud.mts.ru/api"
+vcd_user                        = "administrator"
+vcd_url                         = "https://vcloud.example.com/api"
 vcd_max_retry_timeout           = 1800
 vcd_allow_unverified_ssl        = true
 
